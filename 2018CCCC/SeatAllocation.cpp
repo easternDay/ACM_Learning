@@ -17,11 +17,43 @@
 
 using namespace std;
 
+#define CodeBlocks true
+
 int main()
 {
     //输入样例
     //> 3
     //> 3 4 2
+
+#if CodeBlocks
+    int i;
+    //Get the school num & Team num.
+    int N, count = 0;
+    cin >> N;
+    int *M = new int[N];
+    int *MM = new int[N];
+    for (i = 0; i < N; i++)
+    {
+        cin >> M[i];
+        MM[i] = 10 * M[i];
+        count += M[i];
+    }
+
+    //TODO
+    int now = 0, j = 0;
+    int *Table = new int[count];
+    for (i = 0; i < count; i++)
+    {
+        switch (now)
+        {
+        case 2:
+            //TODO
+
+        default:
+            break;
+        }
+    }
+#endif
 
     //输出样例
     //> #1
