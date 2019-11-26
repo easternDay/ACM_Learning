@@ -42,6 +42,10 @@ int main()
     int *Table = new int[count + 10];
     while (count != 0)
     {
+        if (now >= 3)
+        {
+            now -= 3;
+        }
         if (pre == now)
         {
             Table[pos++] = -1;
@@ -55,16 +59,11 @@ int main()
             }
             pre = now;
             Table[pos++] = now;
-            cout << pos - 1 << ":" << now << "\t";
             if (pos % 10 == 0)
             {
                 cout << endl;
             }
             M[now++]--;
-            if (now == 3)
-            {
-                now -= 3;
-            }
         }
         count--;
     }
@@ -78,6 +77,47 @@ int main()
         if (Table[i] != -1)
         {
             cout << Table[i] << "\t";
+        }
+    }
+
+    cout << endl;
+    cout << "#1" << endl;
+    for (i = 0, count = 0; i < pos; i++)
+    {
+        if (count != 0 && count % 10 == 0)
+        {
+            cout << endl;
+        }
+        if (Table[i] != -1 && Table[i] == 0)
+        {
+            count++;
+            cout << i + 1 << " ";
+        }
+    }
+    cout << "#2" << endl;
+    for (i = 0, count = 0; i < pos; i++)
+    {
+        if (count != 0 && count % 10 == 0)
+        {
+            cout << endl;
+        }
+        if (Table[i] != -1 && Table[i] == 1)
+        {
+            count++;
+            cout << i + 1 << " ";
+        }
+    }
+    cout << "#3" << endl;
+    for (i = 0, count = 0; i < pos; i++)
+    {
+        if (count != 0 && count % 10 == 0)
+        {
+            cout << endl;
+        }
+        if (Table[i] != -1 && Table[i] == 2)
+        {
+            count++;
+            cout << i + 1 << " ";
         }
     }
 
