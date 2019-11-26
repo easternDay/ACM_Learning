@@ -25,35 +25,61 @@ int main()
     //> 3
     //> 3 4 2
 
-#if CodeBlocks
     int i;
     //Get the school num & Team num.
     int N, count = 0;
     cin >> N;
     int *M = new int[N];
-    int *MM = new int[N];
     for (i = 0; i < N; i++)
     {
         cin >> M[i];
-        MM[i] = 10 * M[i];
+        M[i] *= 10;
         count += M[i];
     }
 
     //TODO
-    int now = 0, j = 0;
-    int *Table = new int[count];
-    for (i = 0; i < count; i++)
+    int now = 0, pos = 0, pre = -1;
+    int *Table = new int[count + 10];
+    while (count != 0)
     {
-        switch (now)
+        if (pre == now)
         {
-        case 2:
-            //TODO
+            Table[pos++] = -1;
+        }
+        else
+        {
+            if (M[now] == 0)
+            {
+                now++;
+                continue;
+            }
+            pre = now;
+            Table[pos++] = now;
+            cout << pos - 1 << ":" << now << "\t";
+            if (pos % 10 == 0)
+            {
+                cout << endl;
+            }
+            M[now++]--;
+            if (now == 3)
+            {
+                now -= 3;
+            }
+        }
+        count--;
+    }
 
-        default:
-            break;
+    for (i = 0; i < pos; i++)
+    {
+        if (i % 10 == 0)
+        {
+            cout << endl;
+        }
+        if (Table[i] != -1)
+        {
+            cout << Table[i] << "\t";
         }
     }
-#endif
 
     //输出样例
     //> #1

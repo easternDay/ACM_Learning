@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "xtree": "cpp",
+        "xutility": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp",
+        "fstream": "cpp",
+        "xstring": "cpp",
+        "xiosbase": "cpp",
+        "istream": "cpp"
+    }
+}
