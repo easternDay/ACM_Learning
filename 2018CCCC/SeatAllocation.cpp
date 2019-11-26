@@ -14,10 +14,18 @@
 */
 
 #include <iostream>
+#include <queue>
+#include <vector>
 
 using namespace std;
 
 #define CodeBlocks true
+
+struct node
+{
+    vector<int> q;
+    int num;
+} ac[105];
 
 int main()
 {
@@ -25,100 +33,55 @@ int main()
     //> 3
     //> 3 4 2
 
-    int i;
-    //Get the school num & Team num.
-    int N, count = 0;
-    cin >> N;
-    int *M = new int[N];
-    for (i = 0; i < N; i++)
+    int n, total = 0;
+    cin >> n; //输入学校数目
+    int x;
+    for (int i = 1; i <= n; i++)
     {
-        cin >> M[i];
-        M[i] *= 10;
-        count += M[i];
+        cin >> x;           //输入队伍数目
+        ac[i].num = x * 10; //队伍人数
+        total += x * 10;    //总人数
     }
 
     //TODO
-    int now = 0, pos = 0, pre = -1;
-    int *Table = new int[count + 10];
-    while (count != 0)
+    int id = 1;
+    //总人数循环
+    while (total--)
     {
-        if (now >= 3)
+        //按照学校循环
+        for (int i = 1; i <= n; i++)
         {
-            now -= 3;
-        }
-        if (pre == now)
-        {
-            Table[pos++] = -1;
-        }
-        else
-        {
-            if (M[now] == 0)
+            //学校所有人进入队列
+            if (ac[i].q.size() != ac[i].num)
             {
-                now++;
-                continue;
+                //是否为最后一个学校
+                if (ac[i].q.empty() == false && ac[i].q.back() + 1 == id)
+                {
+                    ac[i].q.push_back(id + 1);
+                    id += 2;
+                }
+                else
+                {
+                    ac[i].q.push_back(id);
+                    id++;
+                }
             }
-            pre = now;
-            Table[pos++] = now;
-            if (pos % 10 == 0)
-            {
+        }
+    }
+
+    //按学校输出
+    for (int i = 1; i <= n; i++)
+    {
+        cout << "#" << i << endl;
+        for (int j = 0; j < ac[i].q.size(); j++)
+        {
+            if (j % 10 == 0 && j != 0)
                 cout << endl;
-            }
-            M[now++]--;
+            if (j % 10 != 0)
+                cout << " ";
+            cout << ac[i].q[j];
         }
-        count--;
-    }
-
-    for (i = 0; i < pos; i++)
-    {
-        if (i % 10 == 0)
-        {
-            cout << endl;
-        }
-        if (Table[i] != -1)
-        {
-            cout << Table[i] << "\t";
-        }
-    }
-
-    cout << endl;
-    cout << "#1" << endl;
-    for (i = 0, count = 0; i < pos; i++)
-    {
-        if (count != 0 && count % 10 == 0)
-        {
-            cout << endl;
-        }
-        if (Table[i] != -1 && Table[i] == 0)
-        {
-            count++;
-            cout << i + 1 << " ";
-        }
-    }
-    cout << "#2" << endl;
-    for (i = 0, count = 0; i < pos; i++)
-    {
-        if (count != 0 && count % 10 == 0)
-        {
-            cout << endl;
-        }
-        if (Table[i] != -1 && Table[i] == 1)
-        {
-            count++;
-            cout << i + 1 << " ";
-        }
-    }
-    cout << "#3" << endl;
-    for (i = 0, count = 0; i < pos; i++)
-    {
-        if (count != 0 && count % 10 == 0)
-        {
-            cout << endl;
-        }
-        if (Table[i] != -1 && Table[i] == 2)
-        {
-            count++;
-            cout << i + 1 << " ";
-        }
+        cout << endl;
     }
 
     //输出样例
