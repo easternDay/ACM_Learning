@@ -43,7 +43,6 @@ int main()
         total += x * 10;    //总人数
     }
 
-    //TODO
     int id = 1;
     //总人数循环
     while (total--)
