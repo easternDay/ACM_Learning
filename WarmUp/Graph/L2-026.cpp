@@ -5,7 +5,7 @@
 using namespace std;
 
 int maxDep = 0;
-vector<int> st[1001];
+vector<int> st[100001];
 set<int> sc;
 
 void DFS(int root, int deep = 0)
