@@ -4,55 +4,28 @@ using namespace std;
 
 typedef struct parent
 {
-    short int father;
-    short int mother;
+    int father;
+    int mother;
     char sex;
 } parent;
 
 parent p[99999];
 int n, id, ide;
 
-set<short int> s;
+set<int> s;
 
-bool Test(set<short int> &s, int parent1, int parent2, int deep = 0)
+bool Test(set<int> &s, int parent1, int parent2, int deep = 0)
 {
-    int count = s.size();
-    if (deep > 4 || (parent1 == -1 && parent2 == -1))
+    if (deep > 3 || parent1 == -1 || parent2 == -1)
     {
         return true;
     }
-    int i = -1, j = -1, k = -1, l = -1;
-    if (parent1 != -1)
+    if ((p[parent1].father != -1 && p[parent1].father == p[parent2].father) || (p[parent1].mother != -1 && p[parent1].mother == p[parent2].mother))
     {
-        s.insert(parent1);
-        if (count == s.size())
-        {
-            return false;
-        }
-        else
-        {
-            i = p[parent1].father;
-            j = p[parent1].mother;
-        }
-    }
-    count = s.size();
-    if (parent2 != -1)
-    {
-        s.insert(parent2);
-        if (count == s.size())
-        {
-            return false;
-        }
-        else
-        {
-            k = p[parent2].father;
-            l = p[parent2].mother;
-        }
+        return false;
     }
 
-    int flag = Test(s, i, k, deep + 1);
-    int flag2 = Test(s, j, l, deep + 1);
-    return flag && flag2;
+    return Test(s, p[parent1].father, p[parent2].father, deep + 1) && Test(s, p[parent1].father, p[parent2].mother, deep + 1) && Test(s, p[parent1].mother, p[parent2].father, deep + 1) && Test(s, p[parent1].mother, p[parent2].mother, deep + 1);
 }
 
 int main()
@@ -71,6 +44,10 @@ int main()
         getchar();
         p[id].sex = getchar();
         cin >> p[id].father >> p[id].mother;
+        if (p[id].father != -1)
+            p[p[id].father].sex = 'M';
+        if (p[id].mother != -1)
+            p[p[id].mother].sex = 'F';
     }
 
     cin >> n;
