@@ -30,7 +30,7 @@ typedef struct Student
 
 vector<Student> s;
 
-short int main()
+int main()
 {
     cin >> n >> g >> k;
 
@@ -61,6 +61,7 @@ short int main()
             money += 20;
         }
     }
+    
     cout << money << endl;
     for (short int j = 0; s[j].n <= k; j++)
     {
