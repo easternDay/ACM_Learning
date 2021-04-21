@@ -38,95 +38,93 @@ AI: I could show you 5
 What Is this prime? I,don 't know
 AI: what Is this prime! you,don't know
 */
-#include <bits/stdc++.h>
+//https://www.cnblogs.com/pkgunboat/p/10651822.html
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
-
-bool isABC(char c)
+bool check(const string &a, string::size_type pos, int cstrlen)
 {
-    return (c > 'A' && c < 'Z') || (c > 'a' && c < 'z');
+    bool ok1{false}, ok2{false};
+    if ((pos == 0) || a[pos - 1] == ' ' || ispunct(a[pos - 1]))
+        ok1 = true;
+    if ((pos + cstrlen - 1 == a.size() - 1) || a[pos + cstrlen] == ' ' || ispunct(a[pos + cstrlen]))
+        ok2 = true;
+    return ok1 & ok2;
 }
-
-int main()
+void stringreplace(string &a)
 {
-    int n, otherPla;
-    cin >> n;
-    getchar();
-    string s;
-    while (n--)
+    int cstrlen[] = {7, 9, 1, 2};
+    int rstrlen[] = {5, 7, 3, 3};
+    char aimstr[][10] = {"can you", "could you", "I", "me"};
+    char restr[][10] = {"I can", "I could", "you", "you"};
+    string::size_type pos = 0;
+    while (pos != a.size())
     {
-        getline(cin, s);
-        cout << s << endl;
-        //消除行首空格
-        while (s[0] == ' ')
-            s.replace(0, 1, "");
-        //消除结尾空格
-        while (s[s.size() - 1] == ' ')
-            s.replace(s.size() - 1, 1, "");
-        //消除标点符号前的空格
-        for (int i = 1; i < s.size(); i++)
+        int i;
+        for (i = 0; i != 4; ++i)
         {
-            if (!isABC(s[i]) && s[i - 1] == ' ')
-                s.replace(i - 1, 1, "");
-        }
-        //消除多余空格
-        while ((otherPla = s.find("  ")) != -1)
-        {
-            s.replace(otherPla, 2, " ");
-        }
-        //小写转化
-        for (int i = 0; i < s.size(); i++)
-        {
-            if (s[i] == 'I')
-            {
-                if (i == 0 && !isABC(s[i + 1]))
+            if (a.compare(pos, cstrlen[i], aimstr[i]) == 0)
+                if (check(a, pos, cstrlen[i]))
                 {
-                    s.replace(otherPla, 1, "you");
-                    continue;
+                    a.replace(pos, cstrlen[i], restr[i]);
+                    pos += rstrlen[i];
+                    break;
                 }
-                if (i == s.size() - 1 && !isABC(s[i - 1]))
-                {
-                    s.replace(otherPla, 1, "you");
-                    continue;
-                }
-                if (i > 0 && i < s.size() - 1 && !isABC(s[i + 1]) && !isABC(s[i - 1]))
-                {
-                    s.replace(otherPla, 1, "you");
-                    continue;
-                }
-            }
-            s[i] = tolower(s[i]);
         }
-        //把原文中所有独立的 I 和 me 换成 you
-        if (s.substr(0, 2) == "me ")
-            s.replace(0, 2, "you");
-        if (s.substr(s.size() - 3, s.size() - 1) == " me")
-            s.replace(s.size() - 2, 2, "you");
-        while ((otherPla = s.find(" me ")) != -1)
-            s.replace(otherPla, 3, " you");
-        //把原文中所有独立的 can you、could you 对应地换成 I can、I could—— 这里“独立”是指被空格或标点符号分隔开的单词；
-        while ((otherPla = s.find("can you")) != -1)
-        {
-            if (otherPla == 0 && s[7] == ' ')
-                s.replace(0, 7, "I can");
-            else if (otherPla == s.size() - 7 && s[otherPla - 1] == ' ')
-                s.replace(otherPla, 7, "I can");
-            else if (s[otherPla - 1] == ' ' && s[otherPla + 7] == ' ')
-                s.replace(otherPla, 7, "I can");
-        }
-        while ((otherPla = s.find("could you")) != -1)
-        {
-            if (otherPla == 0 && s[9] == ' ')
-                s.replace(0, 9, "I could");
-            else if (otherPla == s.size() - 9 && s[otherPla - 1] == ' ')
-                s.replace(otherPla, 9, "I could");
-            else if (s[otherPla - 1] == ' ' && s[otherPla + 9] == ' ')
-                s.replace(otherPla, 9, "I could");
-        }
-        //把原文中所有的问号 ? 换成惊叹号 !；
-        while ((otherPla = s.find("?")) != -1)
-            s.replace(otherPla, 1, "!");
-        cout << "AI: " << s << endl;
+        if (i == 4)
+            ++pos;
     }
-
-    return 0;
+}
+int main(int argc, char **argv)
+{
+    int cnt;
+    cin >> cnt;
+    cin.get();
+    while (cnt--)
+    {
+        string str;
+        getline(cin, str);
+        cout << str << endl;
+        cout << "AI: ";
+        vector<string::size_type> spaceindex;
+        string::size_type pos = 0;
+        string::size_type l = 0, r = str.size();
+        while (pos != str.size() && str[pos] == ' ')
+            ++pos;
+        l = pos;
+        pos = str.size() - 1;
+        while (pos >= l && str[pos] == ' ')
+            --pos;
+        r = pos + 1;
+        str = str.substr(l, r - l);
+        pos = 0;
+        while ((pos = str.find(' ', pos)) != string::npos)
+        {
+            if ((str[pos + 1] == ' ') || (ispunct(str[pos + 1])))
+                spaceindex.push_back(pos);
+            ++pos;
+        }
+        vector<int>::size_type ind = 0;
+        string::size_type j = 0;
+        for (string::size_type i = 0; i != str.size(); ++i)
+        {
+            if (ind != spaceindex.size() && i == spaceindex[ind])
+                ++ind;
+            else
+                str[j++] = str[i];
+        }
+        str.erase(j);
+        for (auto &i : str)
+        {
+            if (isupper(i) && i != 'I')
+                i = tolower(i);
+            if (i == '?')
+                i = '!';
+        }
+        stringreplace(str);
+        cout << str << endl;
+    }
+    return EXIT_SUCCESS;
 }
